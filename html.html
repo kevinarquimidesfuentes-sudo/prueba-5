@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Asistencia QR – Control Escolar Inteligente</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://unpkg.com/html5-qrcode"></script>
+<style>
+:root{--navy:#102b50;--blue:#1769aa;--sky:#eaf4ff;--bg:#f4f7fb;--ink:#1c2b3a;--muted:#718096;--line:#e3eaf2;--green:#16834a;--red:#c43c3c;--orange:#c56a16;--white:#fff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 Inter,system-ui,Segoe UI,Arial,sans-serif}
+button,input,select{font:inherit}button{cursor:pointer;border:0;border-radius:10px;padding:10px 14px;font-weight:650;background:var(--blue);color:white}button:hover{filter:brightness(.95)}button.secondary{background:#e9f0f7;color:var(--navy)}button.danger{background:#b93838}button.success{background:var(--green)}button.small{padding:6px 9px;font-size:12px}
+.app{display:grid;grid-template-columns:245px 1fr;min-height:100vh}.sidebar{background:var(--navy);color:white;padding:24px 16px;position:sticky;top:0;height:100vh}.brand{font-size:18px;font-weight:800;margin:0 8px 5px}.brand-sub{font-size:11px;color:#b9cce0;margin:0 8px 28px}.nav{display:grid;gap:7px}.nav button{background:transparent;color:#dce8f5;text-align:left;font-weight:600}.nav button.active,.nav button:hover{background:#24496f;color:white}.side-foot{position:absolute;bottom:20px;left:20px;right:20px;color:#b9cce0;font-size:11px}.main{padding:28px;max-width:1500px;width:100%;margin:auto}.top{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:24px}.top h1{margin:0;font-size:25px}.muted{color:var(--muted)}.date{font-size:13px;color:var(--muted)}.page{display:none}.page.active{display:block}.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:20px}.card,.panel{background:white;border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 4px 18px #102b5008}.stat-label{font-size:13px;color:var(--muted)}.stat{font-size:29px;font-weight:800;margin-top:6px}.stat-icon{float:right;font-size:22px}.panel{margin-bottom:18px}.panel h2{font-size:17px;margin:0 0 14px}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.between{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.field{display:grid;gap:5px;margin-bottom:12px;flex:1;min-width:150px}.field label{font-size:12px;font-weight:700;color:#526174}.field input,.field select{width:100%;padding:10px 11px;border:1px solid #d7e0ea;border-radius:9px;background:white;color:var(--ink)}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 12px}table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:11px 9px;border-bottom:1px solid var(--line);vertical-align:middle}th{color:#637286;font-size:11px;text-transform:uppercase;letter-spacing:.04em}tbody tr:hover{background:#f8fbff}.table-wrap{overflow-x:auto}.pill{display:inline-block;padding:4px 8px;border-radius:30px;font-size:11px;font-weight:750}.present{background:#e4f6eb;color:#137441}.late{background:#fff0df;color:#a4510d}.absent{background:#fde9e9;color:#a52d2d}.justified{background:#e9efff;color:#3453a4}.neutral{background:#edf1f5;color:#586779}.progress{height:9px;border-radius:10px;background:#e8edf3;overflow:hidden}.progress span{display:block;height:100%;background:#16834a}.empty{text-align:center;padding:28px;color:var(--muted)}.hidden{display:none!important}.qr-card{display:flex;align-items:center;gap:16px;border:1px solid var(--line);padding:14px;border-radius:12px;margin:8px 0}.qr-card #qrCanvas{background:white;padding:8px}.modal{position:fixed;inset:0;background:#0c1e33a8;display:none;align-items:center;justify-content:center;padding:15px;z-index:10}.modal.open{display:flex}.modal-box{background:white;border-radius:16px;padding:22px;width:min(560px,100%);max-height:90vh;overflow:auto}.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}.modal-head h2{margin:0;font-size:19px}.close{background:#edf1f5;color:#34445a}.notice{padding:12px 14px;border-radius:10px;background:#fff8df;color:#805b09;font-size:13px;margin-bottom:15px}.scanner{max-width:440px;margin:0 auto}.scanner-box{min-height:280px;background:#f0f4f8;border-radius:12px;overflow:hidden}.bar{height:1px;background:var(--line);margin:15px 0}.small-note{font-size:12px;color:var(--muted)}.quick{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.quick button{padding:16px 10px}.footer-note{font-size:11px;color:var(--muted);margin-top:15px}
+@media(max-width:900px){.app{grid-template-columns:1fr}.sidebar{height:auto;position:relative;padding:15px}.brand-sub{margin-bottom:12px}.nav{display:flex;overflow:auto}.nav button{white-space:nowrap;padding:9px}.side-foot{display:none}.main{padding:18px}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.card{padding:13px}.stat{font-size:24px}.main{padding:13px}.top h1{font-size:21px}.form-grid{grid-template-columns:1fr}.quick{grid-template-columns:1fr}.qr-card{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand">🎓 ASISTENCIA QR</div><div class="brand-sub">CONTROL ESCOLAR INTELIGENTE</div>
+  <nav class="nav">
+    <button class="active" data-page="dashboard">▦ &nbsp; Inicio</button>
+    <button data-page="classes">▤ &nbsp; Mis clases</button>
+    <button data-page="students">♙ &nbsp; Estudiantes</button>
+    <button data-page="scan">▣ &nbsp; Escanear QR</button>
+    <button data-page="attendance">☑ &nbsp; Asistencia</button>
+    <button data-page="reports">▥ &nbsp; Reportes mensuales</button>
+    <button data-page="settings">⚙ &nbsp; Configuración</button>
+  </nav>
+  <div class="side-foot">Los datos de esta versión se guardan en este navegador.<br>Prototipo local · No sustituye una base de datos en la nube.</div>
+</aside>
+<main class="main">
+  <header class="top"><div><h1 id="pageTitle">Panel principal</h1><div class="date" id="todayText"></div></div><div class="row"><span class="pill neutral">● Sistema local</span></div></header>
+
+  <section class="page active" id="dashboard">
+    <div class="cards">
+      <div class="card"><span class="stat-icon">👥</span><div class="stat-label">Estudiantes activos</div><div class="stat" id="sStudents">0</div></div>
+      <div class="card"><span class="stat-icon">✅</span><div class="stat-label">Presentes hoy</div><div class="stat" id="sPresent">0</div></div>
+      <div class="card"><span class="stat-icon">⏰</span><div class="stat-label">Llegadas tarde</div><div class="stat" id="sLate">0</div></div>
+      <div class="card"><span class="stat-icon">❌</span><div class="stat-label">Ausentes hoy</div><div class="stat" id="sAbsent">0</div></div>
+    </div>
+    <div class="panel">
+      <div class="between"><h2>Resumen de asistencia de hoy</h2><span id="attendancePercent" class="pill present">0% de asistencia</span></div>
+      <div class="progress"><span id="attendanceBar" style="width:0%"></span></div>
+      <p class="small-note" id="dashboardSummary">Registra una clase y agrega estudiantes para comenzar.</p>
+    </div>
+    <div class="panel"><div class="between"><h2>Últimos registros</h2><button class="secondary small" onclick="showPage('attendance')">Ver asistencia</button></div><div class="table-wrap"><table><thead><tr><th>Estudiante</th><th>Clase</th><th>Hora</th><th>Estado</th></tr></thead><tbody id="recentRows"></tbody></table></div></div>
+    <div class="panel"><h2>Accesos rápidos</h2><div class="quick"><button onclick="openClassModal()">＋ Crear clase</button><button onclick="openStudentModal()">＋ Agregar estudiante</button><button onclick="showPage('scan')">▣ Pasar asistencia</button></div></div>
+  </section>
+
+  <section class="page" id="classes">
+    <div class="panel"><div class="between"><div><h2>Mis clases y grupos</h2><div class="small-note">Crea y administra tus asignaturas, grados y secciones.</div></div><button onclick="openClassModal()">＋ Crear nueva clase</button></div><div class="table-wrap"><table><thead><tr><th>Clase / asignatura</th><th>Grado y sección</th><th>Jornada</th><th>Estudiantes</th><th>Horario</th><th>Acciones</th></tr></thead><tbody id="classRows"></tbody></table></div></div>
+  </section>
+
+  <section class="page" id="students">
+    <div class="panel">
+      <div class="between"><div><h2>Directorio de estudiantes</h2><div class="small-note">Edita perfiles, asigna clases y genera sus códigos QR.</div></div><button onclick="openStudentModal()">＋ Agregar estudiante</button></div>
+      <div class="row"><div class="field"><input id="studentSearch" placeholder="Buscar por nombre o código..." oninput="renderStudents()"></div><div class="field"><select id="studentClassFilter" onchange="renderStudents()"><option value="">Todas las clases</option></select></div></div>
+      <div class="table-wrap"><table><thead><tr><th>Estudiante</th><th>Código</th><th>Clase</th><th>Encargado</th><th>Acciones</th></tr></thead><tbody id="studentRows"></tbody></table></div>
+    </div>
+  </section>
+
+  <section class="page" id="scan">
+    <div class="panel scanner">
+      <h2 style="text-align:center">Escáner de códigos QR</h2>
+      <div class="notice">Selecciona la clase antes de escanear. La cámara requiere permiso y, normalmente, que la página esté publicada mediante HTTPS o abierta en localhost.</div>
+      <div class="field"><label>Clase</label><select id="scanClass"></select></div>
+      <div id="reader" class="scanner-box"></div>
+      <div class="row" style="justify-content:center;margin:14px 0"><button id="startScan" onclick="startScanner()">▶ Iniciar cámara</button><button class="secondary" onclick="stopScanner()">Detener cámara</button></div>
+      <div class="bar"></div>
+      <h2>Registro manual alternativo</h2>
+      <div class="field"><label>Código QR / identificador del estudiante</label><input id="manualCode" placeholder="Pega o escribe el código único"></div>
+      <button class="success" style="width:100%" onclick="manualRegister()">Registrar asistencia</button>
+      <p class="small-note">Si la cámara no está disponible, puedes escribir el identificador que contiene el QR.</p>
+      <div id="scanMessage" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="page" id="attendance">
+    <div class="panel">
+      <div class="between"><div><h2>Control de asistencia</h2><div class="small-note">Consulta y corrige los registros de cada jornada.</div></div><button class="secondary" onclick="markPendingAbsent()">Marcar pendientes como ausentes</button></div>
+      <div class="row"><div class="field"><label>Clase</label><select id="attendanceClass" onchange="renderAttendance()"></select></div><div class="field"><label>Fecha</label><input type="date" id="attendanceDate" onchange="renderAttendance()"></div><div class="field"><label>Buscar estudiante</label><input id="attendanceSearch" placeholder="Nombre..." oninput="renderAttendance()"></div></div>
+      <div class="table-wrap"><table><thead><tr><th>Estudiante</th><th>Hora</th><th>Estado</th><th>Cambiar estado</th></tr></thead><tbody id="attendanceRows"></tbody></table></div>
+    </div>
+  </section>
+
+  <section class="page" id="reports">
+    <div class="panel">
+      <h2>Reporte mensual de asistencia</h2>
+      <div class="row"><div class="field"><label>Clase</label><select id="reportClass" onchange="renderReport()"></select></div><div class="field"><label>Mes</label><input type="month" id="reportMonth" onchange="renderReport()"></div></div>
+      <div class="cards" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+        <div class="card"><div class="stat-label">Días lectivos registrados</div><div class="stat" id="rDays">0</div></div>
+        <div class="card"><div class="stat-label">Registros presentes</div><div class="stat" id="rPresent">0</div></div>
+        <div class="card"><div class="stat-label">Ausencias</div><div class="stat" id="rAbsent">0</div></div>
+      </div>
+      <div class="between"><h2>Resumen individual</h2><div class="row"><button class="secondary" onclick="exportReportCSV()">⇩ Exportar Excel (CSV)</button><button onclick="window.print()">Imprimir / Guardar PDF</button></div></div>
+      <div class="table-wrap"><table><thead><tr><th>Estudiante</th><th>Presente</th><th>Tarde</th><th>Ausente</th><th>Justificado</th><th>% asistencia</th></tr></thead><tbody id="reportRows"></tbody></table></div>
+      <p class="footer-note">El porcentaje se calcula sobre los días en que se registró asistencia para la clase. Para un informe oficial, configura el calendario lectivo y registra también los días de clase sin asistencia.</p>
+    </div>
+  </section>
+
+  <section class="page" id="settings">
+    <div class="panel"><h2>Configuración del centro educativo</h2>
+      <div class="form-grid">
+        <div class="field"><label>Centro educativo</label><input id="schoolName" placeholder="Nombre del centro educativo"></div>
+        <div class="field"><label>Nombre del docente</label><input id="teacherName" placeholder="Nombre del docente"></div>
+        <div class="field"><label>Hora de entrada</label><input id="entryTime" type="time" value="07:00"></div>
+        <div class="field"><label>Hora límite de puntualidad</label><input id="lateTime" type="time" value="07:15"></div>
+      </div>
+      <button onclick="saveSettings()">Guardar configuración</button>
+    </div>
+    <div class="panel"><h2>Respaldo de información</h2><p class="small-note">Descarga una copia de tus clases, estudiantes y asistencias. Guarda el archivo en un lugar seguro.</p><div class="row"><button class="secondary" onclick="backupData()">Descargar respaldo JSON</button><label class="secondary" style="padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:650">Restaurar respaldo<input type="file" accept=".json,application/json" onchange="restoreData(event)" hidden></label><button class="danger" onclick="resetData()">Borrar todos los datos</button></div></div>
+  </section>
+</main>
+</div>
+
+<div class="modal" id="classModal"><div class="modal-box"><div class="modal-head"><h2 id="classModalTitle">Crear clase</h2><button class="close" onclick="closeModal('classModal')">✕</button></div>
+<form id="classForm" onsubmit="saveClass(event)"><input type="hidden" id="classId"><div class="form-grid">
+<div class="field"><label>Asignatura / nombre de clase *</label><input id="className" required placeholder="Ej. Matemática"></div>
+<div class="field"><label>Grado *</label><input id="classGrade" required placeholder="Ej. Séptimo"></div>
+<div class="field"><label>Sección</label><input id="classSection" placeholder="Ej. A"></div>
+<div class="field"><label>Jornada</label><select id="classShift"><option>Matutina</option><option>Vespertina</option><option>Nocturna</option><option>Flexible / distancia</option></select></div>
+<div class="field"><label>Hora de entrada</label><input id="classEntry" type="time" value="07:00"></div>
+<div class="field"><label>Hora límite de puntualidad</label><input id="classLate" type="time" value="07:15"></div>
+<div class="field"><label>Año lectivo</label><input id="classYear" type="number" value="2026"></div>
+<div class="field"><label>Días de clase</label><input id="classDays" placeholder="Ej. Lunes, miércoles y viernes"></div>
+</div><button type="submit">Guardar clase</button></form></div></div>
+
+<div class="modal" id="studentModal"><div class="modal-box"><div class="modal-head"><h2 id="studentModalTitle">Agregar estudiante</h2><button class="close" onclick="closeModal('studentModal')">✕</button></div>
+<form id="studentForm" onsubmit="saveStudent(event)"><input type="hidden" id="studentId"><div class="form-grid">
+<div class="field"><label>Nombres *</label><input id="firstName" required></div>
+<div class="field"><label>Apellidos *</label><input id="lastName" required></div>
+<div class="field"><label>Código estudiantil</label><input id="studentCode" placeholder="Se genera automáticamente si se deja vacío"></div>
+<div class="field"><label>Clase *</label><select id="studentClass" required></select></div>
+<div class="field"><label>Nombre del encargado</label><input id="guardian"></div>
+<div class="field"><label>Teléfono del encargado</label><input id="phone" type="tel"></div>
+</div><button type="submit">Guardar estudiante</button></form></div></div>
+
+<div class="modal" id="qrModal"><div class="modal-box" style="text-align:center"><div class="modal-head"><h2>Código QR del estudiante</h2><button class="close" onclick="closeModal('qrModal')">✕</button></div><div id="qrStudentName" style="font-weight:800"></div><div id="qrDisplay" style="display:flex;justify-content:center;padding:18px"></div><div class="small-note" id="qrCodeText"></div><div class="row" style="justify-content:center;margin-top:15px"><button onclick="downloadQR()">Descargar PNG</button><button class="secondary" onclick="window.print()">Imprimir</button></div></div></div>
+
+<script>
+const KEY='asistenciaQR_v1';
+const today=()=>new Date().toLocaleDateString('en-CA');
+const uid=()=>crypto.randomUUID?crypto.randomUUID():'qr-'+Date.now()+'-'+Math.random().toString(36).slice(2);
+let db=loadDB(), scanner=null, currentQR=null;
+function loadDB(){try{return JSON.parse(localStorage.getItem(KEY))||{classes:[],students:[],attendance:[],settings:{}}}catch(e){return{classes:[],students:[],attendance:[],settings:{}}}}
+function saveDB(){localStorage.setItem(KEY,JSON.stringify(db));refreshAll()}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function fullName(s){return (s.firstName+' '+s.lastName).trim()}
+function cls(id){return db.classes.find(c=>c.id===id)}
+function activeStudents(classId){return db.students.filter(s=>s.active!==false&&(!classId||s.classId===classId))}
+function getRecord(studentId,classId,date){return db.attendance.find(a=>a.studentId===studentId&&a.classId===classId&&a.date===date)}
+function showPage(id){stopScanner();document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));const names={dashboard:'Panel principal',classes:'Mis clases',students:'Estudiantes',scan:'Escanear códigos QR',attendance:'Control de asistencia',reports:'Reportes mensuales',settings:'Configuración'};document.getElementById('pageTitle').textContent=names[id];if(id==='reports')renderReport();if(id==='attendance')renderAttendance()}
+document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
+function openModal(id){document.getElementById(id).classList.add('open')}function closeModal(id){document.getElementById(id).classList.remove('open')}
+function refreshAll(){populateSelects();renderDashboard();renderClasses();renderStudents();renderAttendance();renderReport();document.getElementById('todayText').textContent=new Date().toLocaleString('es-SV',{dateStyle:'full',timeStyle:'short'})}
+function populateSelects(){const selects=['scanClass','attendanceClass','reportClass','studentClass','studentClassFilter'];const labels=db.classes.map(c=>({value:c.id,label:`${c.name} – ${c.grade}${c.section?' '+c.section:''}`}));selects.forEach(id=>{const el=document.getElementById(id);if(!el)return;const old=el.value;el.innerHTML=(id==='studentClassFilter'?'<option value="">Todas las clases</option>':'<option value="">Selecciona una clase</option>')+labels.map(x=>`<option value="${esc(x.value)}">${esc(x.label)}</option>`).join('');if(labels.some(x=>x.value===old))el.value=old});if(!document.getElementById('attendanceDate').value)document.getElementById('attendanceDate').value=today();if(!document.getElementById('reportMonth').value)document.getElementById('reportMonth').value=today().slice(0,7)}
+function renderDashboard(){const d=today(),students=db.students.filter(s=>s.active!==false);let rec=db.attendance.filter(a=>a.date===d);let present=rec.filter(a=>a.status==='Presente').length,late=rec.filter(a=>a.status==='Tarde').length,absent=rec.filter(a=>a.status==='Ausente').length;document.getElementById('sStudents').textContent=students.length;document.getElementById('sPresent').textContent=present;document.getElementById('sLate').textContent=late;document.getElementById('sAbsent').textContent=absent;let denom=present+late+absent+rec.filter(a=>a.status==='Justificado').length;let pct=denom?Math.round((present+late)/denom*100):0;document.getElementById('attendancePercent').textContent=pct+'% de asistencia';document.getElementById('attendanceBar').style.width=pct+'%';document.getElementById('dashboardSummary').textContent=denom?`${denom} registros en ${d}.`:'Todavía no hay registros para hoy.';document.getElementById('recentRows').innerHTML=rec.slice().sort((a,b)=>(b.time||'').localeCompare(a.time||'')).slice(0,8).map(a=>{let s=db.students.find(x=>x.id===a.studentId),c=cls(a.classId);return `<tr><td>${esc(s?fullName(s):'Estudiante')}</td><td>${esc(c?c.name:'')}</td><td>${esc(a.time||'—')}</td><td>${statusPill(a.status)}</td></tr>`}).join('')||'<tr><td colspan="4" class="empty">Aún no hay registros.</td></tr>'}
+function statusPill(st){let k=st==='Presente'?'present':st==='Tarde'?'late':st==='Ausente'?'absent':st==='Justificado'?'justified':'neutral';return `<span class="pill ${k}">${esc(st)}</span>`}
+function renderClasses(){document.getElementById('classRows').innerHTML=db.classes.map(c=>`<tr><td><b>${esc(c.name)}</b><div class="small-note">Año ${esc(c.year||'')}</div></td><td>${esc(c.grade)} ${esc(c.section||'')}</td><td>${esc(c.shift||'')}</td><td>${activeStudents(c.id).length}</td><td>${esc(c.entry||'07:00')} – ${esc(c.late||'07:15')}</td><td><button class="secondary small" onclick="editClass('${c.id}')">Editar</button> <button class="danger small" onclick="deleteClass('${c.id}')">Eliminar</button></td></tr>`).join('')||'<tr><td colspan="6" class="empty">Crea tu primera clase.</td></tr>'}
+function openClassModal(id){document.getElementById('classForm').reset();document.getElementById('classId').value='';document.getElementById('classYear').value=new Date().getFullYear();document.getElementById('classModalTitle').textContent=id?'Editar clase':'Crear clase';if(id){let c=cls(id);for(let [f,k] of [['className','name'],['classGrade','grade'],['classSection','section'],['classShift','shift'],['classEntry','entry'],['classLate','late'],['classYear','year'],['classDays','days']])document.getElementById(f).value=c[k]||'';document.getElementById('classId').value=id}openModal('classModal')}
+function editClass(id){openClassModal(id)}
+function saveClass(e){e.preventDefault();let id=document.getElementById('classId').value;let c={id:id||uid(),name:className.value.trim(),grade:classGrade.value.trim(),section:classSection.value.trim(),shift:classShift.value,entry:classEntry.value,late:classLate.value,year:classYear.value,days:classDays.value};if(id)db.classes=db.classes.map(x=>x.id===id?c:x);else db.classes.push(c);closeModal('classModal');saveDB()}
+function deleteClass(id){if(!confirm('¿Eliminar esta clase? Los estudiantes y registros históricos se conservarán, pero dejarán de estar asociados a la clase.'))return;db.classes=db.classes.filter(c=>c.id!==id);saveDB()}
+function renderStudents(){let q=(document.getElementById('studentSearch').value||'').toLowerCase(),filter=document.getElementById('studentClassFilter').value;let list=db.students.filter(s=>s.active!==false&&(!filter||s.classId===filter)&&(`${fullName(s)} ${s.code}`.toLowerCase().includes(q)));document.getElementById('studentRows').innerHTML=list.map(s=>{let c=cls(s.classId);return `<tr><td><b>${esc(fullName(s))}</b></td><td>${esc(s.code)}</td><td>${esc(c?c.name+' – '+c.grade:'Sin clase')}</td><td>${esc(s.guardian||'—')}</td><td><button class="secondary small" onclick="editStudent('${s.id}')">Editar</button> <button class="small" onclick="showQR('${s.id}')">QR</button> <button class="danger small" onclick="deactivateStudent('${s.id}')">Dar de baja</button></td></tr>`}).join('')||'<tr><td colspan="5" class="empty">No hay estudiantes para mostrar.</td></tr>'}
+function openStudentModal(id){if(!db.classes.length){alert('Primero debes crear una clase.');showPage('classes');return}document.getElementById('studentForm').reset();document.getElementById('studentId').value='';document.getElementById('studentModalTitle').textContent=id?'Editar estudiante':'Agregar estudiante';if(id){let s=db.students.find(x=>x.id===id);studentId.value=s.id;firstName.value=s.firstName;lastName.value=s.lastName;studentCode.value=s.code;studentClass.value=s.classId;guardian.value=s.guardian||'';phone.value=s.phone||''}openModal('studentModal')}
+function editStudent(id){openStudentModal(id)}
+function saveStudent(e){e.preventDefault();let id=studentId.value,old=db.students.find(s=>s.id===id);let code=studentCode.value.trim()||(old&&old.code)||('ALU-'+Math.random().toString(36).slice(2,8).toUpperCase());if(db.students.some(s=>s.code===code&&s.id!==id)){alert('Ese código estudiantil ya existe.');return}let s={id:id||uid(),firstName:firstName.value.trim(),lastName:lastName.value.trim(),code,classId:studentClass.value,guardian:guardian.value.trim(),phone:phone.value.trim(),qrToken:old?old.qrToken:uid(),active:true};if(id)db.students=db.students.map(x=>x.id===id?{...x,...s}:x);else db.students.push(s);closeModal('studentModal');saveDB()}
+function deactivateStudent(id){if(!confirm('¿Dar de baja a este estudiante? Se conservará su historial de asistencia.'))return;db.students=db.students.map(s=>s.id===id?{...s,active:false}:s);saveDB()}
+function showQR(id){let s=db.students.find(x=>x.id===id);if(!s)return;currentQR=s;document.getElementById('qrStudentName').textContent=fullName(s);document.getElementById('qrCodeText').textContent='Identificador: '+s.qrToken;let box=document.getElementById('qrDisplay');box.innerHTML='';if(window.QRCode)new QRCode(box,{text:s.qrToken,width:210,height:210,correctLevel:QRCode.CorrectLevel.H});else box.textContent='No se pudo cargar el generador QR. Comprueba tu conexión a internet.';openModal('qrModal')}
+function downloadQR(){let canvas=document.querySelector('#qrDisplay canvas'),img=document.querySelector('#qrDisplay img');let url=canvas?canvas.toDataURL('image/png'):img?.src;if(!url)return;let a=document.createElement('a');a.href=url;a.download=(currentQR?currentQR.code:'estudiante')+'-QR.png';a.click()}
+function setMessage(msg,ok=true){let el=document.getElementById('scanMessage');el.innerHTML=`<div class="notice" style="margin-top:14px;background:${ok?'#e4f6eb':'#fde9e9'};color:${ok?'#137441':'#a52d2d'}">${esc(msg)}</div>`}
+function registerToken(token,classId){let s=db.students.find(x=>x.qrToken===token||x.code===token);if(!s){setMessage('Código QR no reconocido.',false);return}if(s.active===false){setMessage('Este estudiante está dado de baja.',false);return}if(s.classId!==classId){setMessage('El estudiante no pertenece a la clase seleccionada.',false);return}let date=today(),existing=getRecord(s.id,classId,date);if(existing){setMessage(`${fullName(s)} ya tiene asistencia registrada (${existing.status}, ${existing.time}).`,false);return}let c=cls(classId),now=new Date(),time=now.toLocaleTimeString('es-SV',{hour:'2-digit',minute:'2-digit',hour12:false}),lateLimit=(c?.late||db.settings.lateTime||'07:15');let status=time>lateLimit?'Tarde':'Presente';db.attendance.push({id:uid(),studentId:s.id,classId,date,time,status,source:'QR'});saveDB();setMessage(`✓ ${fullName(s)}: asistencia ${status.toLowerCase()} registrada a las ${time}.`,true);document.getElementById('manualCode').value=''}
+function manualRegister(){let code=document.getElementById('manualCode').value.trim(),c=document.getElementById('scanClass').value;if(!c){setMessage('Selecciona una clase.',false);return}if(!code){setMessage('Escribe o pega un código.',false);return}registerToken(code,c)}
+async function startScanner(){let c=document.getElementById('scanClass').value;if(!c){setMessage('Selecciona una clase antes de iniciar.',false);return}if(!window.Html5Qrcode){setMessage('No se pudo cargar el lector QR. Comprueba tu conexión.',false);return}try{scanner=new Html5Qrcode('reader');await scanner.start({facingMode:'environment'},{fps:10,qrbox:{width:230,height:230}},decoded=>{registerToken(decoded,c)},()=>{});document.getElementById('startScan').disabled=true}catch(err){setMessage('No se pudo iniciar la cámara. Verifica los permisos y usa HTTPS o localhost.',false)}}
+async function stopScanner(){if(scanner){try{if(scanner.isScanning)await scanner.stop();scanner.clear()}catch(e){}scanner=null}let b=document.getElementById('startScan');if(b)b.disabled=false}
+function renderAttendance(){let c=document.getElementById('attendanceClass').value,d=document.getElementById('attendanceDate').value||today(),q=(document.getElementById('attendanceSearch').value||'').toLowerCase();let list=activeStudents(c).filter(s=>fullName(s).toLowerCase().includes(q));document.getElementById('attendanceRows').innerHTML=list.map(s=>{let a=getRecord(s.id,c,d);return `<tr><td>${esc(fullName(s))}</td><td>${esc(a?.time||'—')}</td><td>${a?statusPill(a.status):statusPill('Sin registro')}</td><td><select onchange="changeStatus('${s.id}','${c}','${d}',this.value)"><option value="">Seleccionar...</option>${['Presente','Tarde','Ausente','Justificado'].map(x=>`<option ${a?.status===x?'selected':''}>${x}</option>`).join('')}</select></td></tr>`}).join('')||'<tr><td colspan="4" class="empty">Selecciona una clase con estudiantes.</td></tr>'}
+function changeStatus(sid,cid,date,status){if(!status)return;let a=getRecord(sid,cid,date);if(a){a.status=status;if(status==='Ausente'||status==='Justificado')a.time='';}else db.attendance.push({id:uid(),studentId:sid,classId:cid,date,time:['Presente','Tarde'].includes(status)?new Date().toLocaleTimeString('es-SV',{hour:'2-digit',minute:'2-digit',hour12:false}):'',status,source:'Manual'});saveDB()}
+function markPendingAbsent(){let c=attendanceClass.value,d=attendanceDate.value;if(!c){alert('Selecciona una clase.');return}if(!confirm('¿Marcar como ausentes a todos los estudiantes que no tienen registro en esta fecha?'))return;activeStudents(c).forEach(s=>{if(!getRecord(s.id,c,d))db.attendance.push({id:uid(),studentId:s.id,classId:c,date:d,time:'',status:'Ausente',source:'Cierre de asistencia'})});saveDB()}
+function renderReport(){let c=document.getElementById('reportClass').value,m=document.getElementById('reportMonth').value||today().slice(0,7);let students=activeStudents(c),records=db.attendance.filter(a=>a.classId===c&&a.date.startsWith(m));let dates=[...new Set(records.map(a=>a.date))];let totalP=records.filter(a=>a.status==='Presente').length,totalA=records.filter(a=>a.status==='Ausente').length;document.getElementById('rDays').textContent=dates.length;document.getElementById('rPresent').textContent=totalP;document.getElementById('rAbsent').textContent=totalA;document.getElementById('reportRows').innerHTML=students.map(s=>{let r=records.filter(a=>a.studentId===s.id),p=r.filter(a=>a.status==='Presente').length,t=r.filter(a=>a.status==='Tarde').length,a=r.filter(a=>a.status==='Ausente').length,j=r.filter(a=>a.status==='Justificado').length,den=p+t+a+j,pct=den?Math.round((p+t)/den*100):0;return `<tr><td>${esc(fullName(s))}</td><td>${p}</td><td>${t}</td><td>${a}</td><td>${j}</td><td><b>${pct}%</b></td></tr>`}).join('')||'<tr><td colspan="6" class="empty">Selecciona una clase para generar el reporte.</td></tr>'}
+function exportReportCSV(){let c=reportClass.value,m=reportMonth.value;if(!c){alert('Selecciona una clase.');return}let rows=[['Estudiante','Presente','Tarde','Ausente','Justificado','Porcentaje']];activeStudents(c).forEach(s=>{let r=db.attendance.filter(a=>a.classId===c&&a.studentId===s.id&&a.date.startsWith(m)),p=r.filter(a=>a.status==='Presente').length,t=r.filter(a=>a.status==='Tarde').length,a=r.filter(a=>a.status==='Ausente').length,j=r.filter(a=>a.status==='Justificado').length,d=p+t+a+j;rows.push([fullName(s),p,t,a,j,(d?Math.round((p+t)/d*100):0)+'%'])});downloadFile('\ufeff'+rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n'),`reporte-asistencia-${m}.csv`,'text/csv;charset=utf-8')}
+function downloadFile(content,name,type){let blob=new Blob([content],{type}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;a.click();URL.revokeObjectURL(url)}
+function saveSettings(){db.settings={schoolName:schoolName.value,teacherName:teacherName.value,entryTime:entryTime.value,lateTime:lateTime.value};saveDB();alert('Configuración guardada.')}
+function backupData(){downloadFile(JSON.stringify(db,null,2),'respaldo-asistencia-qr.json','application/json')}
+function restoreData(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(!x.classes||!x.students||!x.attendance)throw Error();db=x;saveDB();alert('Respaldo restaurado.')}catch(err){alert('El archivo no es un respaldo válido.')}};r.readAsText(f)}
+function resetData(){if(!confirm('Esta acción eliminará todos los datos guardados en este navegador. ¿Continuar?'))return;localStorage.removeItem(KEY);db=loadDB();refreshAll()}
+function loadSettings(){let s=db.settings||{};schoolName.value=s.schoolName||'';teacherName.value=s.teacherName||'';entryTime.value=s.entryTime||'07:00';lateTime.value=s.lateTime||'07:15'}
+loadSettings();refreshAll();
+</script>
+</body>
+</html>
